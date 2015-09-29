@@ -14,7 +14,6 @@ void MiniBatchKMeans::cluster(const MatrixXdRowMajor& data, int k, int b, int t)
         {
             int random_pos = utils.get_random() * data_points.rows();
             batch.row(j) = data_points.row(random_pos);
-            remove_row(data_points,random_pos);
         }
         e_step(batch);
         m_step(batch);
@@ -63,12 +62,4 @@ void MiniBatchKMeans::m_step(const MatrixXdRowMajor& data_points)
 MatrixXdRowMajor MiniBatchKMeans::get_centroids()
 {
     return centroids;
-}
-void MiniBatchKMeans::remove_row(MatrixXdRowMajor& matrix,unsigned int row_to_remove)
-{
-    unsigned int num_rows = matrix.rows()-1;
-    unsigned int num_cols = matrix.cols();
-    if( row_to_remove < num_rows )
-        matrix.block(row_to_remove,0,num_rows-row_to_remove,num_cols) = matrix.block(row_to_remove+1,0,num_rows-row_to_remove,num_cols);
-    matrix.conservativeResize(num_rows,num_cols);
 }

@@ -31,7 +31,6 @@ private:
     void init_centroids(const MatrixXdRowMajor& data_points, int k, int b);
     void m_step(const MatrixXdRowMajor& data_points);
     double euclid_distance(const VectorXd& A, const VectorXd& B);
-    void remove_row(MatrixXdRowMajor& matrix,unsigned int row_to_remove);
 };
 
 #endif
