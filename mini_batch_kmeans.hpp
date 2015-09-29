@@ -30,7 +30,6 @@ private:
     int find_nearest_centroid(const RowVectorXd& data_point);
     void init_centroids(const MatrixXdRowMajor& data_points, int k, int b);
     void m_step(const MatrixXdRowMajor& data_points);
-    double euclid_distance(const VectorXd& A, const VectorXd& B);
 };
 
 #endif

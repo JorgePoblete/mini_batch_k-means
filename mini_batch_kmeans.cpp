@@ -1,10 +1,9 @@
 #include "mini_batch_kmeans.hpp"
 
 MiniBatchKMeans::MiniBatchKMeans(){}
-void MiniBatchKMeans::cluster(const MatrixXdRowMajor& data, int k, int b, int t)
+void MiniBatchKMeans::cluster(const MatrixXdRowMajor& data_points, int k, int b, int t)
 {
     tiempo_promedio = 0.0;
-    MatrixXdRowMajor data_points = data.block(0,0,data.rows(),data.cols());
     init_centroids(data_points,k,b);
     MatrixXdRowMajor batch = MatrixXdRowMajor::Zero(b,data_points.cols());
     for (int i=0; i<t; i++)
@@ -42,10 +41,6 @@ int MiniBatchKMeans::find_nearest_centroid(const RowVectorXd& data_point)
     MatrixXf::Index index;
     (centroids.rowwise() - data_point).rowwise().norm().minCoeff(&index);
     return index;
-}
-double MiniBatchKMeans::euclid_distance(const VectorXd& A, const VectorXd& B)
-{
-    return (A-B).norm();
 }
 void MiniBatchKMeans::m_step(const MatrixXdRowMajor& data_points)
 {
