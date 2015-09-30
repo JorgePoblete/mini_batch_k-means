@@ -6,16 +6,18 @@ void MiniBatchKMeans::cluster(const MatrixXdRowMajor& data_points, int k, int b,
     tiempo_promedio = 0.0;
     init_centroids(data_points,k,b);
     MatrixXdRowMajor old_centroids;
+    VectorXd random_pos;
     MatrixXdRowMajor batch = MatrixXdRowMajor::Zero(b,data_points.cols());
     double max_error = (double)k/data_points.rows();
     double error = max_error + 1.0;
+    utils.seed_random();
     for (int i=0; i<t; i++)
     {
         utils.tic();
+        random_pos = VectorXd::Random(b);
         for (int j=0; j<b; j++)
         {
-            int random_pos = utils.get_random() * data_points.rows();
-            batch.row(j) = data_points.row(random_pos);
+            batch.row(j) = data_points.row(utils.get_random()*data_points.rows());
         }
         old_centroids = centroids;
         #ifdef MIC
