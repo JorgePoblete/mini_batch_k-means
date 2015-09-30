@@ -5,6 +5,7 @@ void MiniBatchKMeans::cluster(const MatrixXdRowMajor& data_points, int k, int b,
 {
     tiempo_promedio = 0.0;
     init_centroids(data_points,k,b);
+    MatrixXdRowMajor old_centroids;
     MatrixXdRowMajor batch = MatrixXdRowMajor::Zero(b,data_points.cols());
     for (int i=0; i<t; i++)
     {
@@ -14,13 +15,17 @@ void MiniBatchKMeans::cluster(const MatrixXdRowMajor& data_points, int k, int b,
             int random_pos = utils.get_random() * data_points.rows();
             batch.row(j) = data_points.row(random_pos);
         }
+        old_centroids = centroids;
         e_step(batch);
         m_step(batch);
+        double error = (centroids - old_centroids).rowwise().norm().maxCoeff();
         double tiempo_parcial = utils.toc();
         tiempo_promedio += tiempo_parcial;
         std::cout<<"Iteration: "<<i+1<<"\ttime: "<< tiempo_parcial;
-        std::cout<<"("<< (tiempo_promedio/(i+1)) << ")" << std::endl;
+        std::cout<<"("<< (tiempo_promedio/(i+1)) << ")";
+        std::cout<<"\tError: " << error << std::endl;
     }
+    std::cout<<"Total Time: " << tiempo_promedio << std::endl;
 }
 void MiniBatchKMeans::init_centroids(const MatrixXdRowMajor& data_points, int k, int b)
 {
