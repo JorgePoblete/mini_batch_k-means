@@ -44,20 +44,19 @@ void MiniBatchKMeans::init_centroids(const MatrixXdRowMajor& data_points, int k,
     std::cout << "Number of MICs on the system: " << mic_number_devices << std::endl;
 
     double mic_workload = 0.8;
-	mic_data_points_count = (data_points.rows() * (mic_workload/(double)mic_number_devices));
+	mic_data_points_count = (b * (mic_workload/(double)mic_number_devices));
     host_initial_data_point = mic_number_devices * mic_data_points_count;
 	int data_points_length = mic_data_points_count * data_points.cols();
 	int centroids_length = k * data_points.cols();
-	double *host_data_points = (double *)data_points.data();
     for (int i=0; i<mic_number_devices; i++)
     {
 	   	std::cout << "MIC" << i << ": " << " data count " << mic_data_points_count << std::endl;
 	    utils.tic();
-	    #pragma offload target(mic:i) nocopy(mic_data_points[0:data_points_length]: ALLOC) nocopy(mic_centroids[0:centroids_length]: ALLOC)
+	    #pragma offload target(mic:i) nocopy(mic_data_points[0:data_points_length]: ALLOC)\
+        nocopy(mic_centroids[0:centroids_length]: ALLOC)
 	    {}
 	    std::cout << "MIC" << i << ": " << " memmory allocated in " << utils.toc() << "secs" << std::endl;
 	    utils.tic();
-        host_data_points += data_points_length;
     }
     #endif
 }
@@ -68,7 +67,7 @@ void MiniBatchKMeans::mic_e_step(const MatrixXdRowMajor& data_points)
     int n = data_points.rows();
     int d = data_points.cols();
 
-    double *host_data_points = (double)data_points.data();
+    double *host_data_points = (double *)data_points.data();
     double *host_centroids = centroids.data();
     double *host_membership = membership.data();
 	int data_points_count = mic_data_points_count;
@@ -89,7 +88,7 @@ void MiniBatchKMeans::mic_e_step(const MatrixXdRowMajor& data_points)
 	            }
 	        }
 	    }
-        host_data_points += data_points_count*d;
+        host_data_points += mic_data_points_count*d;
 		host_membership += mic_data_points_count;
 	}
     #pragma omp parallel
