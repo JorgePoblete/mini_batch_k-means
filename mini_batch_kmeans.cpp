@@ -18,7 +18,11 @@ void MiniBatchKMeans::cluster(const MatrixXdRowMajor& data_points, int k, int b,
             batch.row(j) = data_points.row(random_pos);
         }
         old_centroids = centroids;
-        e_step(batch);
+        #ifdef MIC
+            mic_e_step(batch);
+        #else
+            e_step(batch);
+        #endif
         m_step(batch);
         error = (centroids - old_centroids).rowwise().norm().maxCoeff();
         double tiempo_parcial = utils.toc();
