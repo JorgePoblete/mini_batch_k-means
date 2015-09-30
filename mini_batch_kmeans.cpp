@@ -68,7 +68,7 @@ void MiniBatchKMeans::mic_e_step(const MatrixXdRowMajor& data_points)
     int n = data_points.rows();
     int d = data_points.cols();
 
-    double *host_data_points = data_points.data();
+    double *host_data_points = (double)data_points.data();
     double *host_centroids = centroids.data();
     double *host_membership = membership.data();
 	int data_points_count = mic_data_points_count;
