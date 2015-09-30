@@ -2,12 +2,13 @@
 
 Utils::Utils()
 {
-    this->mt = std::mt19937(rd());
-    this->rng = std::uniform_real_distribution<double>(0.0, 0.9999999999);
-}
 
+}
+void Utils::seed_random(){
+     std::srand(std::time(0));
+}
 double Utils::get_random(){
-    return this->rng(this->mt);
+    return ((double)rand() / (double)(RAND_MAX));
 }
 void Utils::tic()
 {

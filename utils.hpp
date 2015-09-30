@@ -1,3 +1,6 @@
+#include <cstdlib>
+#include <iostream>
+#include <ctime>
 #include <chrono>
 #include <random>
 
@@ -8,14 +11,12 @@ class Utils
 {
 public:
     Utils();
+    void seed_random();
     double get_random();
     void tic();
     double toc();
 
 private:
-    std::random_device rd;
-    std::mt19937 mt;
-    std::uniform_real_distribution<double> rng;
     std::chrono::time_point<std::chrono::system_clock> start;
 };
 
