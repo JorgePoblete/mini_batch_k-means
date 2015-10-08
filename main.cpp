@@ -26,6 +26,7 @@ int main(int argc, char** argv)
     std::cout << "rows: " << data_points.rows() << std::endl;
     std::cout << "cols: " << data_points.cols() << std::endl;
     MiniBatchKMeans kmeans;
+    kmeans.init_centroids(data_points,k,b);
     kmeans.cluster(data_points,k,b,t);
     std::cout << kmeans.get_centroids() << std::endl;
     return 0;
