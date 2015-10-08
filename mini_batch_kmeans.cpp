@@ -4,20 +4,17 @@ MiniBatchKMeans::MiniBatchKMeans(){}
 void MiniBatchKMeans::cluster(const MatrixXdRowMajor& data_points, int k, int b, int t)
 {
     tiempo_promedio = 0.0;
-    init_centroids(data_points,k,b);
     MatrixXdRowMajor old_centroids;
-    VectorXd random_pos;
     MatrixXdRowMajor batch = MatrixXdRowMajor::Zero(b,data_points.cols());
-    double max_error = (double)k/data_points.rows();
-    double error = max_error + 1.0;
+    double error;
     utils.seed_random();
     for (int i=0; i<t; i++)
     {
-        utils.tic();
-        random_pos = VectorXd::Random(b);
+        utils.tic("I");
         for (int j=0; j<b; j++)
         {
-            batch.row(j) = data_points.row(utils.get_random()*data_points.rows());
+            double r = utils.get_random();
+            batch.row(j) = data_points.row(r*data_points.rows());
         }
         old_centroids = centroids;
         #ifdef MIC
@@ -27,7 +24,7 @@ void MiniBatchKMeans::cluster(const MatrixXdRowMajor& data_points, int k, int b,
         #endif
         m_step(batch);
         error = (centroids - old_centroids).rowwise().norm().maxCoeff();
-        double tiempo_parcial = utils.toc();
+        double tiempo_parcial = utils.toc("I");
         tiempo_promedio += tiempo_parcial;
         std::cout<<"Iteration: "<<i+1<<"\ttime: "<< tiempo_parcial;
         std::cout<<"("<< (tiempo_promedio/(i+1)) << ")";

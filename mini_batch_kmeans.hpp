@@ -23,6 +23,7 @@ public:
     MiniBatchKMeans();
 
     MatrixXdRowMajor get_centroids();
+    void init_centroids(const MatrixXdRowMajor& data_points, int k, int b);
     void cluster(const MatrixXdRowMajor& data, int k, int b, int t);
 private:
     double tiempo_promedio;
@@ -46,7 +47,6 @@ private:
         void e_step(const MatrixXdRowMajor& data_points);
     #endif
     int find_nearest_centroid(const RowVectorXd& data_point);
-    void init_centroids(const MatrixXdRowMajor& data_points, int k, int b);
     void m_step(const MatrixXdRowMajor& data_points);
 };
 
