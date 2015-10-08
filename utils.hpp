@@ -1,8 +1,7 @@
-#include <cstdlib>
-#include <iostream>
-#include <ctime>
 #include <chrono>
 #include <random>
+#include <map>
+#include <string>
 
 #ifndef UTILS_H_
 #define UTILS_H_
@@ -13,11 +12,11 @@ public:
     Utils();
     void seed_random();
     double get_random();
-    void tic();
-    double toc();
+    void tic(std::string timer);
+    double toc(std::string timer);
 
 private:
-    std::chrono::time_point<std::chrono::system_clock> start;
+    std::map<std::string, std::chrono::time_point<std::chrono::system_clock>> start;
 };
 
 #endif
