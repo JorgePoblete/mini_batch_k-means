@@ -24,7 +24,7 @@ public:
 
     MatrixXdRowMajor get_centroids();
     void init_centroids(const MatrixXdRowMajor& data_points, int k, int b);
-    void cluster(const MatrixXdRowMajor& data, int k, int b, int t);
+    void cluster(const MatrixXdRowMajor& data, int b, int t);
 private:
     double tiempo_promedio;
     int changed_centroids;

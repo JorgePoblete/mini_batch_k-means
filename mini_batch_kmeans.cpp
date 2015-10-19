@@ -1,7 +1,7 @@
 #include "mini_batch_kmeans.hpp"
 
 MiniBatchKMeans::MiniBatchKMeans(){}
-void MiniBatchKMeans::cluster(const MatrixXdRowMajor& data_points, int k, int b, int t)
+void MiniBatchKMeans::cluster(const MatrixXdRowMajor& data_points, int b, int t)
 {
     tiempo_promedio = 0.0;
     MatrixXdRowMajor old_centroids;

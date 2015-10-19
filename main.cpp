@@ -47,7 +47,7 @@ int main(int argc, char** argv)
             for (int j=0; j<d; j++)
                 std::cin >> buffer(i,j);
         }
-        kmeans.cluster(buffer,k,b,t);
+        kmeans.cluster(buffer,b,t);
         n -= buffer_size;
     }
     //read and cluster the las data points
@@ -57,7 +57,7 @@ int main(int argc, char** argv)
         for (int j=0; j<d; j++)
             std::cin >> buffer(i,j);
     }
-    kmeans.cluster(buffer,k,b,t);
+    kmeans.cluster(buffer,b,t);
 
     if (k<100)
         std::cout << kmeans.get_centroids() << std::endl;
