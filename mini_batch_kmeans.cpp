@@ -50,12 +50,12 @@ void MiniBatchKMeans::init_centroids(const MatrixXdRowMajor& data_points, int k,
     for (int i=0; i<mic_number_devices; i++)
     {
 	   	std::cout << "MIC" << i << ": " << " data count " << mic_data_points_count << std::endl;
-	    utils.tic();
-	    #pragma offload target(mic:i) nocopy(mic_data_points[0:data_points_length]: ALLOC)\
+	    utils.tic("ALLOC");
+	    #pragma offload target(mic:i)\
+        nocopy(mic_data_points[0:data_points_length]: ALLOC)\
         nocopy(mic_centroids[0:centroids_length]: ALLOC)
 	    {}
-	    std::cout << "MIC" << i << ": " << " memmory allocated in " << utils.toc() << "secs" << std::endl;
-	    utils.tic();
+	    std::cout << "MIC" << i << ": " << " memmory allocated in " << utils.toc("ALLOC") << "secs" << std::endl;
     }
     #endif
 }
